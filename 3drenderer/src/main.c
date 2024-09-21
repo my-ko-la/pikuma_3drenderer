@@ -122,7 +122,8 @@ void draw_rect(int x, int y, int width, int height, uint32_t color) {
   // Bounding box
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
-      // offset immediately, no if condition required
+      // To do less work, only iterate over the pixels you need
+      // by using an offset immediately, no if condition required
       int current_x = x + i;
       int current_y = y + j;
       color_buffer[(WINDOW_WIDTH * current_y) + current_x] = color;
@@ -135,11 +136,11 @@ void render(void) {
   SDL_RenderClear(renderer);
 
 #if 0
-  draw_grid(10, 10);
   draw_dotted(10, 10);
 #endif
+  draw_grid(10, 10);
 
-  draw_rect(400, 300, 75, 50, RED);
+  draw_rect(400, 300, 155, 100, RED);
 
   render_color_buffer();
   clear_color_buffer(0xFF000000);
@@ -179,7 +180,9 @@ bool initialize_window(void) {
     return false;
   }
 
+#if 0
   SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+#endif
 
   return true;
 }
