@@ -118,15 +118,14 @@ void draw_dotted(int yfreq, int xfreq) {
   }
 }
 
-void draw_rect(int pos_x, int pos_y, int width, int height, uint32_t color) {
+void draw_rect(int x, int y, int width, int height, uint32_t color) {
   // Bounding box
-  const int vert_bound = pos_y + height;
-  const int hori_bound = pos_x + width;
-
-  for (int y = 0; y < WINDOW_HEIGHT; y++) {
-    for (int x = 0; x < WINDOW_WIDTH; x++) {
-      if (y >= pos_y && y <= vert_bound && x >= pos_x && x <= hori_bound)
-        color_buffer[(WINDOW_WIDTH * y) + x] = color;
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      // offset immediately, no if condition required
+      int current_x = x + i;
+      int current_y = y + j;
+      color_buffer[(WINDOW_WIDTH * current_y) + current_x] = color;
     }
   }
 }
