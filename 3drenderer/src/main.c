@@ -118,14 +118,29 @@ void draw_dotted(int yfreq, int xfreq) {
   }
 }
 
+void draw_rect(int pos_x, int pos_y, int width, int height, uint32_t color) {
+  // Bounding box
+  const int vert_bound = pos_y + height;
+  const int hori_bound = pos_x + width;
+
+  for (int y = 0; y < WINDOW_HEIGHT; y++) {
+    for (int x = 0; x < WINDOW_WIDTH; x++) {
+      if (y >= pos_y && y <= vert_bound && x >= pos_x && x <= hori_bound)
+        color_buffer[(WINDOW_WIDTH * y) + x] = color;
+    }
+  }
+}
+
 void render(void) {
   SDL_SetRenderDrawColor(renderer, 214, 250, 78, 255);
   SDL_RenderClear(renderer);
 
 #if 0
   draw_grid(10, 10);
-#endif
   draw_dotted(10, 10);
+#endif
+
+  draw_rect(400, 300, 75, 50, RED);
 
   render_color_buffer();
   clear_color_buffer(0xFF000000);
