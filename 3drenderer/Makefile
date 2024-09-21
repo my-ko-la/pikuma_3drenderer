@@ -1,13 +1,18 @@
-# Macos specific 
-LDFLAGS=-I/opt/homebrew/include -D_THREAD_SAFE -lsdl2
+# Compiler flags
+CFLAGS = -I/opt/homebrew/include -I./src -D_THREAD_SAFE -Wall -std=c99
 
-build: 
-	gcc $(LDFLAGS) -Wall -std=c99 src/*.c -o renderer
+# Linker flags
+LDFLAGS =
 
-run: 
+# Libraries to link against
+LDLIBS = -lSDL2
+
+# Build rule
+build:
+	gcc $(CFLAGS) src/*.c -o renderer $(LDFLAGS) $(LDLIBS)
+
+run:
 	./renderer
 
 clean:
-	rm renderer
-
-
+	rm -f renderer
