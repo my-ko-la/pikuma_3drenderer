@@ -86,6 +86,9 @@ void update(void) {
   for (int i = 0; i < N_POINTS; i++) {
     vec3_t point = cube_points[i];
 
+    // Move the point away from the camera
+    point.z -= camera_position.z;
+
     vec2_t projected_point = project(point); // point == vector, ish
     projected_points[i] = projected_point;
   }

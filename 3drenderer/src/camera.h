@@ -4,6 +4,7 @@
 #include "vector.h"
 
 extern const int FOV_FACTOR;
+extern vec3_t camera_position;
 
 typedef struct {
   vec3_t position;
