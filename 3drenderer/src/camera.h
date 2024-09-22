@@ -3,6 +3,8 @@
 
 #include "vector.h"
 
+extern const int FOV_FACTOR;
+
 typedef struct {
   vec3_t position;
   vec3_t rotation;

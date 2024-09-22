@@ -58,11 +58,17 @@ void render_color_buffer() {
   SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
+void draw_pixel(int x, int y, uint32_t color) {
+  if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT) {
+    color_buffer[(WINDOW_WIDTH * y) + x] = color;
+  }
+}
+
 // Set color buffer
 void clear_color_buffer(uint32_t color) {
   for (int y = 0; y < WINDOW_HEIGHT; y++) {
     for (int x = 0; x < WINDOW_WIDTH; x++) {
-      SET_COLOR_BUFFER(x, y, color);
+      draw_pixel(x, y, color);
     }
   }
 }
@@ -71,7 +77,7 @@ void draw_grid(int yfreq, int xfreq) {
   for (int y = 0; y < WINDOW_HEIGHT; y++) {
     for (int x = 0; x < WINDOW_WIDTH; x++) {
       if (divisible(y, yfreq) || divisible(x, xfreq))
-        SET_COLOR_BUFFER(x, y, GRAY);
+        draw_pixel(x, y, GRAY);
     }
   }
 }
@@ -79,7 +85,7 @@ void draw_grid(int yfreq, int xfreq) {
 void draw_dotted(int yfreq, int xfreq) {
   for (int y = 0; y < WINDOW_HEIGHT; y += yfreq) {
     for (int x = 0; x < WINDOW_WIDTH; x += xfreq) {
-      SET_COLOR_BUFFER(x, y, GRAY);
+      draw_pixel(x, y, GRAY);
     }
   }
 }
@@ -92,12 +98,10 @@ void draw_rect(int x, int y, int width, int height, uint32_t color) {
       // by using an offset immediately, no if condition required
       int current_x = x + i;
       int current_y = y + j;
-      SET_COLOR_BUFFER(current_x, current_y, color);
+      draw_pixel(current_x, current_y, color);
     }
   }
 }
-
-void draw_pixel(int x, int y, uint32_t color) { SET_COLOR_BUFFER(x, y, color); }
 
 /*
 

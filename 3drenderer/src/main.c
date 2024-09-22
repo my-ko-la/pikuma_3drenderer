@@ -15,6 +15,7 @@
 
 const int N_POINTS = 9 * 9 * 9;
 vec3_t cube_points[N_POINTS];
+vec2_t projected_points[N_POINTS];
 
 const int LAPTOP_MONITOR = 0;
 const int RED = 0xFFFF0000;
@@ -46,6 +47,7 @@ void setup(void) {
       SDL_TEXTUREACCESS_STREAMING, // Frame by frame dynamic updates
       WINDOW_WIDTH, WINDOW_HEIGHT);
 
+  // Initialize Cube for Projection
   int point_count = 0;
   for (float x = -1; x <= 1; x += 0.25) {
     for (float y = -1; y <= 1; y += 0.25) {
@@ -80,16 +82,24 @@ void process_input(void) {
 
 */
 
-void update(void) {}
+void update(void) {
+  for (int i = 0; i < N_POINTS; i++) {
+    vec3_t point = cube_points[i];
+
+    vec2_t projected_point = project(point); // point == vector, ish
+    projected_points[i] = projected_point;
+  }
+}
 
 void render(void) {
-  SDL_SetRenderDrawColor(renderer, 214, 250, 78, 255);
-  SDL_RenderClear(renderer);
+  draw_dotted(10, 10);
 
-  draw_grid(10, 10);
-
-  draw_rect(400, 300, 155, 100, RED);
-  draw_pixel(399, 288, RED);
+  // Loop all projected points and render them
+  for (int i = 0; i < N_POINTS; i++) {
+    vec2_t projected_point = projected_points[i];
+    draw_rect(projected_point.x + (float)(WINDOW_WIDTH / 2),
+              projected_point.y + (float)(WINDOW_HEIGHT / 2), 4, 4, 0xFFFFFF00);
+  };
 
   render_color_buffer();
   clear_color_buffer(0xFF000000);

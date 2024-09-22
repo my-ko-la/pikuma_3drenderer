@@ -14,4 +14,6 @@ typedef struct {
 
 // TODO: declarations of transforms
 
+vec2_t project(vec3_t point);
+
 #endif
