@@ -3,13 +3,19 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "camera.h"
 #include "display.h"
+#include "vector.h"
 
 /*
 
 * * * * GLOBALS * * * *
 
 */
+
+const int N_POINTS = 9 * 9 * 9;
+vec3_t cube_points[N_POINTS];
+
 const int LAPTOP_MONITOR = 0;
 const int RED = 0xFFFF0000;
 const int GRAY = 0xFF333333;
@@ -39,6 +45,17 @@ void setup(void) {
       SDL_PIXELFORMAT_ARGB8888, // Format is alpha first then colors, all 8 bits
       SDL_TEXTUREACCESS_STREAMING, // Frame by frame dynamic updates
       WINDOW_WIDTH, WINDOW_HEIGHT);
+
+  int point_count = 0;
+  for (float x = -1; x <= 1; x += 0.25) {
+    for (float y = -1; y <= 1; y += 0.25) {
+      for (float z = -1; z <= 1; z += 0.25) {
+        vec3_t new_point = {.x = x, .y = y, .z = z};
+        cube_points[point_count] = new_point;
+        point_count++;
+      }
+    }
+  }
 }
 
 void process_input(void) {
@@ -72,6 +89,7 @@ void render(void) {
   draw_grid(10, 10);
 
   draw_rect(400, 300, 155, 100, RED);
+  draw_pixel(399, 288, RED);
 
   render_color_buffer();
   clear_color_buffer(0xFF000000);

@@ -34,6 +34,7 @@ extern const int GRAY;
 
 bool initialize_window(void);
 void draw_rect(int x, int y, int width, int height, uint32_t color);
+void draw_pixel(int x, int y, uint32_t color);
 void draw_grid(int yfreq, int xfreq);
 void render_color_buffer(void);
 void destroy_window(void);

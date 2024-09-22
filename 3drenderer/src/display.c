@@ -1,5 +1,8 @@
 #include "display.h"
 
+#define SET_COLOR_BUFFER(x, y, color)                                          \
+  (color_buffer[WINDOW_WIDTH * (y) + (x)] = (color))
+
 bool initialize_window(void) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     fprintf(stderr, "Error initializing SDl.\n");
@@ -55,10 +58,11 @@ void render_color_buffer() {
   SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
+// Set color buffer
 void clear_color_buffer(uint32_t color) {
   for (int y = 0; y < WINDOW_HEIGHT; y++) {
     for (int x = 0; x < WINDOW_WIDTH; x++) {
-      color_buffer[(WINDOW_WIDTH * y) + x] = color;
+      SET_COLOR_BUFFER(x, y, color);
     }
   }
 }
@@ -67,7 +71,7 @@ void draw_grid(int yfreq, int xfreq) {
   for (int y = 0; y < WINDOW_HEIGHT; y++) {
     for (int x = 0; x < WINDOW_WIDTH; x++) {
       if (divisible(y, yfreq) || divisible(x, xfreq))
-        color_buffer[(WINDOW_WIDTH * y) + x] = GRAY;
+        SET_COLOR_BUFFER(x, y, GRAY);
     }
   }
 }
@@ -75,7 +79,7 @@ void draw_grid(int yfreq, int xfreq) {
 void draw_dotted(int yfreq, int xfreq) {
   for (int y = 0; y < WINDOW_HEIGHT; y += yfreq) {
     for (int x = 0; x < WINDOW_WIDTH; x += xfreq) {
-      color_buffer[(WINDOW_WIDTH * y) + x] = GRAY;
+      SET_COLOR_BUFFER(x, y, GRAY);
     }
   }
 }
@@ -88,10 +92,12 @@ void draw_rect(int x, int y, int width, int height, uint32_t color) {
       // by using an offset immediately, no if condition required
       int current_x = x + i;
       int current_y = y + j;
-      color_buffer[(WINDOW_WIDTH * current_y) + current_x] = color;
+      SET_COLOR_BUFFER(current_x, current_y, color);
     }
   }
 }
+
+void draw_pixel(int x, int y, uint32_t color) { SET_COLOR_BUFFER(x, y, color); }
 
 /*
 
