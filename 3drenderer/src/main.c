@@ -17,6 +17,12 @@ const int N_POINTS = 9 * 9 * 9;
 vec3_t cube_points[N_POINTS];
 vec2_t projected_points[N_POINTS];
 
+vec3_t cube_rotation = {
+    .x = 0.0,
+    .y = 0.0,
+    .z = 0.0,
+};
+
 const int LAPTOP_MONITOR = 0;
 const int RED = 0xFFFF0000;
 const int GRAY = 0xFF333333;
@@ -83,13 +89,22 @@ void process_input(void) {
 */
 
 void update(void) {
+  cube_rotation.y += 0.01;
+  cube_rotation.x += 0.005;
+  cube_rotation.z += 0.00002;
+
   for (int i = 0; i < N_POINTS; i++) {
     vec3_t point = cube_points[i];
 
-    // Move the point away from the camera
-    point.z -= camera_position.z;
+    vec3_t point_y_rotated = vec3_rotate_y(point, cube_rotation.y);
+    vec3_t point_x_rotated = vec3_rotate_x(point_y_rotated, cube_rotation.x);
+    vec3_t transformed_point = vec3_rotate_z(point_x_rotated, cube_rotation.z);
 
-    vec2_t projected_point = project(point); // point == vector, ish
+    // Move the point away from the camera
+    transformed_point.z -= camera_position.z;
+
+    vec2_t projected_point = project(transformed_point); // point == vector, ish
+
     projected_points[i] = projected_point;
   }
 }

@@ -5,7 +5,7 @@ CFLAGS = -I/opt/homebrew/include -I./src -D_THREAD_SAFE -Wall -std=c99
 LDFLAGS =
 
 # Libraries to link against
-LDLIBS = -lSDL2
+LDLIBS = -lSDL2 -lm
 
 # Build rule
 build:
