@@ -39,6 +39,8 @@ SDL_Texture *color_buffer_texture = NULL;
 int WINDOW_WIDTH = 800;
 int WINDOW_HEIGHT = 600;
 
+int previous_frame_time = 0;
+
 void setup(void) {
   color_buffer = // a.k.a. Frame Buffer
       (uint32_t *)malloc(sizeof(color_buffer) * WINDOW_WIDTH * WINDOW_HEIGHT);
@@ -89,6 +91,13 @@ void process_input(void) {
 */
 
 void update(void) {
+  // Waste cycles until we get to ~16ms / 1 frame in
+  while (!SDL_TICKS_PASSED(SDL_GetTicks(),
+                           previous_frame_time + FRAME_TARGET_TIME))
+    ;
+
+  previous_frame_time = SDL_GetTicks();
+
   cube_rotation.y += 0.01;
   cube_rotation.x += 0.005;
   cube_rotation.z += 0.00002;

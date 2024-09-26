@@ -14,6 +14,11 @@
 
 */
 
+#define FPS 60
+#define FRAME_TARGET_TIME (1000 / FPS)
+
+extern int previous_frame_time;
+
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 extern SDL_Window *window;

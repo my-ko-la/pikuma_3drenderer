@@ -9,7 +9,7 @@ LDLIBS = -lSDL2 -lm
 
 # Build rule
 build:
-	gcc $(CFLAGS) src/*.c -o renderer $(LDFLAGS) $(LDLIBS)
+	clang $(CFLAGS) src/*.c -o renderer $(LDFLAGS) $(LDLIBS)
 
 run:
 	./renderer
