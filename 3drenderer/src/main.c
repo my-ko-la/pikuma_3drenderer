@@ -91,16 +91,21 @@ void process_input(void) {
 */
 
 void update(void) {
-  // Waste cycles until we get to ~16ms / 1 frame in
-  while (!SDL_TICKS_PASSED(SDL_GetTicks(),
-                           previous_frame_time + FRAME_TARGET_TIME))
-    ;
+  // While loop here would flood the executable with processor instructions
+  // resulting in 100% CPU utilization
+  // uses the `snooze` fn under the hood lol
+  int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - previous_frame_time);
 
+  if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) {
+    SDL_Delay(time_to_wait);
+  }
+
+  // Keep in mind that this flow locks the movement to the FPS
   previous_frame_time = SDL_GetTicks();
 
   cube_rotation.y += 0.01;
   cube_rotation.x += 0.005;
-  cube_rotation.z += 0.00002;
+  cube_rotation.z += 0.002;
 
   for (int i = 0; i < N_POINTS; i++) {
     vec3_t point = cube_points[i];
